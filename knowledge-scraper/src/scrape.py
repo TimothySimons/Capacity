@@ -5,7 +5,7 @@ import sys
 
 def make_soup(ingredients, recipe, bowl):
     module = importlib.import_module(f"soups.{recipe}")
-    module.Soup(ingredients, bowl).soup_to_csv()
+    module.Soup(bowl, ingredients).soup_to_csv()
 
 
 if __name__ == "__main__":

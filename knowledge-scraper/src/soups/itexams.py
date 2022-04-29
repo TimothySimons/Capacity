@@ -29,15 +29,12 @@ class Soup(ISoup):
 
     def get_question(self, question_element):
         question = question_element.get_text().strip()
-        print(f"question: {question}")
         return question
 
     def get_options(self, option_elements):
         options = ",".join([option_element.get_text().strip() for option_element in option_elements])
-        print(f"options: {options}")
         return options
 
     def get_answers(self, answer_elements):
         answers = answer_elements[0].get_text().strip()
-        print(f"answers : {answers}")
         return answers

@@ -7,11 +7,15 @@ from bs4 import BeautifulSoup
 
 class ISoup(ABC):
 
-    def __init__(self, url, csv_path):
-        page = requests.get(url)
-        self.soup = BeautifulSoup(page.content, "lxml")
+    def __init__(self, csv_path, url=None, soup=None):
         self.csv_path = csv_path
         self.csv_headers = ["questions", "options", "answers"]
+
+        if url:
+            page = requests.get(url)
+            self.soup = BeautifulSoup(page.content, "lxml")
+        else:
+            self.soup = soup
 
     @abstractmethod
     def find_questionnaire_elements(self):
