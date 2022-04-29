@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup
 
 
-class Soup(ABC):
+class ISoup(ABC):
 
     def __init__(self, url, csv_path):
         page = requests.get(url)
@@ -42,7 +42,6 @@ class Soup(ABC):
         pass
 
     def soup_to_csv(self):
-        # TODO: needs to be idempotent
         with open(self.csv_path, "w") as csv_file:
             csv_writer = csv.writer(csv_file)
             csv_writer.writerow(self.csv_headers)

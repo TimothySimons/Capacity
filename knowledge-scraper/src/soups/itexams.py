@@ -1,12 +1,14 @@
 import re
 
-from src.i_soup import Soup
+from src.soup import ISoup
 
+# > account details <
+# ===================
 # username: deleteme
 # password: password
 
 
-class ItExamsSoup(Soup):
+class Soup(ISoup):
 
     def find_questionnaire_elements(self):
         questions_container_element = self.soup.find("div", class_="questions_container")
@@ -27,12 +29,15 @@ class ItExamsSoup(Soup):
 
     def get_question(self, question_element):
         question = question_element.get_text().strip()
+        print(f"question: {question}")
         return question
 
     def get_options(self, option_elements):
         options = ",".join([option_element.get_text().strip() for option_element in option_elements])
+        print(f"options: {options}")
         return options
 
     def get_answers(self, answer_elements):
-        answer = answer_elements[0].get_text().strip()
-        return answer
+        answers = answer_elements[0].get_text().strip()
+        print(f"answers : {answers}")
+        return answers
