@@ -1,3 +1,5 @@
+// TODO: consider putting the main.go class in a cmd folder as is seemingly the convention
+
 package main
 
 import (
@@ -24,4 +26,13 @@ func main() {
 	entry.Explanation = "this is an explanation"
 
 	database.AddEntry(bucketName, entry)
+	database.Head(bucketName, 5)
+
+	bucketName = "someOtherBucket"
+	database.CreateBucket(bucketName)
+	err := database.AddEntriesFromCSV(bucketName, "operating_systems.csv")
+	fmt.Println(err)
+	err = database.AddEntry(bucketName, entry)
+	fmt.Println(err)
+	database.Head(bucketName, 10)
 }
