@@ -3,9 +3,9 @@ import json
 import sys
 
 
-def make_soup(ingredients, recipe, bowl):
+def make_soup(flavour, ingredient, recipe, bowl):
     module = importlib.import_module(f"soups.{recipe}")
-    module.Soup(bowl, ingredients).soup_to_csv()
+    module.Soup(bowl, **{flavour: ingredient}).soup_to_csv("a")
 
 
 if __name__ == "__main__":
@@ -18,4 +18,5 @@ if __name__ == "__main__":
         config = json.load(config_file)
 
     for soup in config["soups"]:
-        make_soup(soup["ingredients"], soup["recipe"], config["bowl"])
+        for ingredient in soup["ingredients"]:
+            make_soup(soup["flavour"], ingredient, soup["recipe"], config["bowl"])

@@ -5,12 +5,6 @@ from src.soup import ISoup
 
 class Soup(ISoup):
 
-    def __init__(self, csv_path, html_file_path):
-        with open(html_file_path, 'r') as html_file:
-            contents = html_file.read()
-            soup = BeautifulSoup(contents, 'lxml')
-        super().__init__(csv_path, soup=soup)
-
     def find_questionnaire_elements(self):
         questions_container_element = self.soup.find("section", class_="ibpage-mcq-problems")
         questionnaire_elements = questions_container_element.find_all("section", class_="ibpage-mcq-problems__item")
@@ -31,6 +25,9 @@ class Soup(ISoup):
         answer_elements = [option_element.p]
         return answer_elements
 
+    def find_explanation_element(self, questionnaire_elements):
+        return ""
+
     def get_question(self, question_element):
         question = question_element.get_text().strip()
         return question
@@ -42,3 +39,6 @@ class Soup(ISoup):
     def get_answers(self, answer_elements):
         answers = answer_elements[0].get_text().strip()
         return answers
+
+    def get_explanation(self, explanation_element):
+        return ""

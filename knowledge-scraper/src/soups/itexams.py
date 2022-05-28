@@ -27,6 +27,9 @@ class Soup(ISoup):
         answer_elements = [questionnaire_element.find("div", {'class': re.compile(r'answer_block*')}).p.strong]
         return answer_elements
 
+    def find_explanation_element(self, questionnaire_elements):
+        return ""
+
     def get_question(self, question_element):
         question = question_element.get_text().strip()
         return question
@@ -38,3 +41,7 @@ class Soup(ISoup):
     def get_answers(self, answer_elements):
         answers = answer_elements[0].get_text().strip()
         return answers
+
+    def get_explanation(self, explanation_element):
+        return ""
+
