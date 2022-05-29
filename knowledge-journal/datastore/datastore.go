@@ -29,10 +29,6 @@ type DatabaseEntry struct {
 	Explanation string
 }
 
-func PrintHello() {
-	fmt.Println("Hello, Modules! This is database speaking!")
-}
-
 func InitialiseDatabase(databasePath string) (Database, error) {
 	db, err := bolt.Open(databasePath, 0600, nil)
 	database := Database{
@@ -71,27 +67,8 @@ func (database Database) AddEntry(bucketName string, entry DatabaseEntry) error 
 	return err
 }
 
-func (database Database) Head(bucketName string, n int) error {
-	db := database.boltDB
-	err := db.View(func(tx *bolt.Tx) error {
-		bucket := tx.Bucket([]byte(bucketName))
-		cursor := bucket.Cursor()
-
-		index := 0
-		for key, value := cursor.First(); key != nil && index != n; key, value = cursor.Next() {
-			var entry DatabaseEntry
-			err := json.Unmarshal(value, &entry)
-			if err != nil {
-				return err
-			}
-			index += 1
-		}
-		return nil
-	})
-	return err
-}
-
 func (database Database) AddEntriesFromCSV(bucketName string, csvPath string) error {
+	// TODO: do we want to impose strict requirements on the system
 	csvFile, err := os.Open(csvPath)
 	if err != nil {
 		return err
@@ -119,4 +96,24 @@ func (database Database) AddEntriesFromCSV(bucketName string, csvPath string) er
 		database.AddEntry(bucketName, entry)
 	}
 	return nil
+}
+
+func (database Database) Head(bucketName string, n int) error {
+	db := database.boltDB
+	err := db.View(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte(bucketName))
+		cursor := bucket.Cursor()
+
+		index := 0
+		for key, value := cursor.First(); key != nil && index != n; key, value = cursor.Next() {
+			var entry DatabaseEntry
+			err := json.Unmarshal(value, &entry)
+			if err != nil {
+				return err
+			}
+			index += 1
+		}
+		return nil
+	})
+	return err
 }
