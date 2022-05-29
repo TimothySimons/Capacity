@@ -10,8 +10,8 @@ from src.soup import ISoup
 
 class Soup(ISoup):
 
-    def find_questionnaire_elements(self):
-        questions_container_element = self.soup.find("div", class_="questions_container")
+    def find_questionnaire_elements(self, beautiful_soup):
+        questions_container_element = beautiful_soup.find("div", class_="questions_container")
         questionnaire_elements = questions_container_element.find_all("div", class_="card")
         return questionnaire_elements
 
@@ -35,13 +35,19 @@ class Soup(ISoup):
         return question
 
     def get_options(self, option_elements):
-        options = ",".join([option_element.get_text().strip() for option_element in option_elements])
+        options = [option_element.get_text().strip() for option_element in option_elements]
         return options
 
     def get_answers(self, answer_elements):
-        answers = answer_elements[0].get_text().strip()
+        answers = answer_elements[0].get_text().strip().split(",")
         return answers
 
     def get_explanation(self, explanation_element):
         return ""
+
+    def process(self, question, options, answers, explanation):
+        answers = [option for option in options if option[0] in answers]
+        options = [option[3:] for option in options]  # e.g. remove "B.*space*" from "B.*space*rsyslog"
+        answers = [answer[3:] for answer in answers]
+        return question, options, answers, explanation
 

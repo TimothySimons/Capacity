@@ -1,12 +1,10 @@
-import re
-from bs4 import BeautifulSoup
 from src.soup import ISoup
 
 
 class Soup(ISoup):
 
-    def find_questionnaire_elements(self):
-        questions_container_element = self.soup.find("section", class_="ibpage-mcq-problems")
+    def find_questionnaire_elements(self, soup):
+        questions_container_element = soup.find("section", class_="ibpage-mcq-problems")
         questionnaire_elements = questions_container_element.find_all("section", class_="ibpage-mcq-problems__item")
         return questionnaire_elements
 
@@ -42,3 +40,6 @@ class Soup(ISoup):
 
     def get_explanation(self, explanation_element):
         return ""
+
+    def process(self, question, options, answers, explanation):
+        return question, options, answers, explanation
